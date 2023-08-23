@@ -6,10 +6,11 @@ import { useCallback, useState } from "react";
 import MenuItem from "./MenuItem";
 import useRegisterModal from "@/app/hooks/useRegisterModal";
 import useLoginModal from "@/app/hooks/useLoginModal";
-import { User } from "next-auth";
+import { signOut } from "next-auth/react";
+import { SafeUser } from "@/app/types";
 
 interface UserMenuProps {
-  currentUser?: User | null;
+  currentUser?: SafeUser | null;
 }
 const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
   const registerModal = useRegisterModal();
@@ -35,7 +36,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
         >
           <AiOutlineMenu />
           <div className="hidden md:block">
-            <Avatar />
+            <Avatar src={currentUser?.image} />
           </div>
         </div>
       </div>
@@ -47,6 +48,15 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
                 <MenuItem onClick={() => {}} label="My Trips" />
                 <MenuItem onClick={() => {}} label="My Favourites" />
                 <MenuItem onClick={() => {}} label="My Reservations" />
+                <MenuItem onClick={() => {}} label="My Properties" />
+                <MenuItem onClick={() => {}} label="Airbnb my home" />
+                <hr />
+                <MenuItem
+                  onClick={() => {
+                    signOut();
+                  }}
+                  label="Logout"
+                />
               </>
             ) : (
               <>
