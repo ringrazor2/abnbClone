@@ -67,7 +67,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
       className="col-span-1 cursor-pointer group"
     >
       <div className="flex flex-col gap-2 w-full">
-        <div className="aspect-sqaure w-full relative overflow-hidden rounded-xl">
+        <div className="aspect-sqaure w-full h-[250px] relative overflow-hidden rounded-xl">
           <Image
             layout="fixed"
             height={180}
