@@ -77,6 +77,11 @@ const Modal: React.FC<ModalProps> = ({
         focus:outline-none
         bg-neutral-800/70
       "
+        onClick={(e) => {
+          if (e.target === e.currentTarget) {
+            handleClose();
+          }
+        }}
       >
         <div
           className="

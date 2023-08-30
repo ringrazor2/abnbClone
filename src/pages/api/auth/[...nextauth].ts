@@ -54,6 +54,73 @@ export const authOptions: AuthOptions = {
     signIn: "/",
   },
   debug: process.env.NODE_ENV == "development",
+  callbacks: <any>{
+    async account(user: any, account: any, profile: any) {
+      const existingUser = await prisma.user.findUnique({
+        where: {
+          email: user.email,
+        },
+      });
+
+      if (existingUser) {
+        const existingAccount = await prisma.account.findUnique({
+          where: {
+            provider_providerAccountId: {
+              provider: account.provider,
+              providerAccountId: account.id,
+            },
+          },
+        });
+
+        if (!existingAccount) {
+          await prisma.account.create({
+            data: {
+              userId: existingUser.id,
+              type: "oauth",
+              provider: account.provider,
+              providerAccountId: account.id,
+              refresh_token: null,
+              access_token: null,
+              expires_at: null,
+              token_type: null,
+              scope: null,
+              id_token: null,
+              session_state: null,
+            },
+          });
+        }
+
+        return existingUser;
+      }
+
+      if (!existingUser) {
+        const newUser = await prisma.user.create({
+          data: {
+            name: user.name,
+            email: user.email,
+          },
+        });
+
+        await prisma.account.create({
+          data: {
+            userId: newUser.id,
+            type: "oauth",
+            provider: account.provider,
+            providerAccountId: account.id,
+            refresh_token: null,
+            access_token: null,
+            expires_at: null,
+            token_type: null,
+            scope: null,
+            id_token: null,
+            session_state: null,
+          },
+        });
+
+        return newUser;
+      }
+    },
+  },
   session: {
     strategy: "jwt",
   },
