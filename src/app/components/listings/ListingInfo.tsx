@@ -6,7 +6,6 @@ import { IconType } from "react-icons";
 import Avatar from "../Avatar";
 import ListingCategory from "./ListingCategory";
 import dynamic from "next/dynamic";
-// import Map from "@/app/components/Map";
 
 const Map = dynamic(() => import("../Map"), {
   ssr: false,
