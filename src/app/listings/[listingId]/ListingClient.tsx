@@ -59,6 +59,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
 
     axios
       .post("/api/reservations", {
+        listingId: listing?.id,
         totalPrice,
         startDate: dateRange.startDate,
         endDate: dateRange.endDate,
