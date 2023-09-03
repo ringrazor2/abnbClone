@@ -65,12 +65,14 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
                 />
                 <MenuItem
                   onClick={() => {
+                    router.push("/favorites");
                     toggleOpen();
                   }}
-                  label="My Favourites"
+                  label="My Favorites"
                 />
                 <MenuItem
                   onClick={() => {
+                    router.push("/reservations");
                     toggleOpen();
                   }}
                   label="My Reservations"
@@ -92,6 +94,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
                 <MenuItem
                   onClick={() => {
                     signOut();
+                    router.push("/");
                   }}
                   label="Logout"
                 />
