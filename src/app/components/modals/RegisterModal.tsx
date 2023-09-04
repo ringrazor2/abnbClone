@@ -12,13 +12,13 @@ import Input from "../inputs/Input";
 import { toast } from "react-hot-toast";
 import Button from "../Button";
 import { signIn } from "next-auth/react";
-import LoginModal from "./LoginModal";
 import useLoginModal from "@/app/hooks/useLoginModal";
 
 const RegisterModal = () => {
   const registerModal = useRegisterModal();
   const loginModal = useLoginModal();
   const [isLoading, setIsLoading] = useState(false);
+  const [authError, setAuthError] = useState(false);
 
   const {
     register,
@@ -32,17 +32,20 @@ const RegisterModal = () => {
     },
   });
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     setIsLoading(true);
-    axios
+
+    const result = await axios
       .post("/api/register", data)
       .then(() => {
         toast.success("Success!");
+        setAuthError(false);
         registerModal.onClose();
         loginModal.onOpen();
       })
       .catch((error) => {
         toast.error("Something went wrong");
+        setAuthError(true);
       })
       .finally(() => {
         setIsLoading(false);
@@ -64,6 +67,7 @@ const RegisterModal = () => {
         register={register}
         errors={errors}
         required
+        authError={authError}
       />
       <Input
         id="name"
@@ -72,6 +76,7 @@ const RegisterModal = () => {
         register={register}
         errors={errors}
         required
+        authError={authError}
       />
       <Input
         id="password"
@@ -81,7 +86,11 @@ const RegisterModal = () => {
         register={register}
         errors={errors}
         required
+        authError={authError}
       />
+      {authError && (
+        <p className="text-rose-500">User with that email already exists</p>
+      )}
     </div>
   );
 

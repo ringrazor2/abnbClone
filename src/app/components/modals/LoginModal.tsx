@@ -19,38 +19,40 @@ const LoginModal = () => {
   const loginModal = useLoginModal();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [authError, setAuthError] = useState(false);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FieldValues>({
+    mode: "onBlur",
+    shouldFocusError: true,
     defaultValues: {
       email: "",
       password: "",
     },
   });
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     setIsLoading(true);
 
-    signIn("credentials", {
+    const result = await signIn("credentials", {
       ...data,
       redirect: false,
-    }).then((callback) => {
-      setIsLoading(false);
-
-      if (callback?.ok) {
-        toast.success("Logged in");
-        router.refresh();
-
-        loginModal.onClose();
-
-        if (callback?.error) {
-          toast.error(callback.error);
-        }
-      }
     });
+
+    setIsLoading(false);
+
+    if (result?.error) {
+      toast.error(result.error);
+      setAuthError(true);
+    } else {
+      toast.success("Logged in");
+      setAuthError(false);
+      loginModal.onClose();
+      router.push("/");
+    }
   };
 
   const toggle = useCallback(() => {
@@ -68,6 +70,7 @@ const LoginModal = () => {
         register={register}
         errors={errors}
         required
+        authError={authError}
       />
 
       <Input
@@ -78,7 +81,11 @@ const LoginModal = () => {
         register={register}
         errors={errors}
         required
+        authError={authError}
       />
+      {authError && (
+        <p className="text-rose-500">Incorrect email or password</p>
+      )}
     </div>
   );
 
@@ -91,6 +98,7 @@ const LoginModal = () => {
         icon={FcGoogle}
         onClick={() => {
           signIn("google");
+          router.push("/");
         }}
       />
       {/* <Button

@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import Heading from "./Heading";
 import Button from "./Button";
+import useLoginModal from "../hooks/useLoginModal";
 
 interface EmptyState {
   title?: string;
@@ -16,10 +17,13 @@ const EmptyState: React.FC<EmptyState> = ({
   showReset,
 }) => {
   const router = useRouter();
+  const loginModal = useLoginModal();
 
   return (
     <div className="h-[60vh] flex flex-col gap-2 justify-center items-center">
-      <Heading title={title} subtitle={subtitle} center />
+      <div onClick={loginModal.onOpen} className="cursor-pointer">
+        <Heading title={title} subtitle={subtitle} center />
+      </div>
       <div className="w-48 mt-4">
         {showReset && (
           <Button
