@@ -1,9 +1,9 @@
 "use client";
 
-import { StringLiteral } from "typescript";
+import { IconType } from "react-icons";
 
 interface ListingCategoryProps {
-  icon: string;
+  icon: IconType;
   label: string;
   description: string;
 }
