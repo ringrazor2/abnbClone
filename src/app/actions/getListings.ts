@@ -2,7 +2,7 @@ import prisma from "@/app/libs/prismadb";
 
 export interface IListingsParams {
   userId?: string;
-  guestCount?: string;
+  guestCount?: number;
   roomCount?: number;
   bathroomCount?: number;
   startDate?: string;
@@ -10,16 +10,17 @@ export interface IListingsParams {
   locationValue?: string;
   category?: string;
 }
+
 export default async function getListings(params: IListingsParams) {
   try {
     const {
       userId,
-      guestCount,
       roomCount,
+      guestCount,
       bathroomCount,
+      locationValue,
       startDate,
       endDate,
-      locationValue,
       category,
     } = params;
 
@@ -33,17 +34,18 @@ export default async function getListings(params: IListingsParams) {
       query.category = category;
     }
 
-    // give all properties with that room count or more
     if (roomCount) {
       query.roomCount = {
         gte: +roomCount,
       };
     }
+
     if (guestCount) {
       query.guestCount = {
         gte: +guestCount,
       };
     }
+
     if (bathroomCount) {
       query.bathroomCount = {
         gte: +bathroomCount,
@@ -72,6 +74,7 @@ export default async function getListings(params: IListingsParams) {
         },
       };
     }
+
     const listings = await prisma.listing.findMany({
       where: query,
       orderBy: {
@@ -79,7 +82,12 @@ export default async function getListings(params: IListingsParams) {
       },
     });
 
-    return listings;
+    const safeListings = listings.map((listing) => ({
+      ...listing,
+      createdAt: listing.createdAt.toISOString(),
+    }));
+
+    return safeListings;
   } catch (error: any) {
     throw new Error(error);
   }
