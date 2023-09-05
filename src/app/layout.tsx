@@ -10,6 +10,8 @@ import Head from "next/head";
 import RentModal from "./components/modals/RentModal";
 import SearchModal from "./components/modals/SearchModal";
 
+export const dynamic = "force-dynamic";
+
 const font = Nunito({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
