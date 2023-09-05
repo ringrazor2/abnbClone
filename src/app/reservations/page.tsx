@@ -3,6 +3,8 @@ import getCurrentUser from "../actions/getCurrentUser";
 import getReservations from "../actions/getReservations";
 import ReservationsClient from "./ReservationsClient";
 
+export const dynamic = "force-dynamic";
+
 const ReservationsPage = async () => {
   const currentUser = await getCurrentUser();
 
