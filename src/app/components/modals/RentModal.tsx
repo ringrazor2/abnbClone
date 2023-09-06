@@ -6,14 +6,8 @@ import useRentModal from "@/app/hooks/useRentModal";
 import Heading from "../Heading";
 import { categories } from "../navbar/Categories";
 import CategoryInput from "../inputs/CategoryInput";
-import {
-  FieldValues,
-  FormSubmitHandler,
-  SubmitHandler,
-  useForm,
-} from "react-hook-form";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import CountrySelect from "../inputs/CountrySelect";
-import Map from "../../components/Map";
 import dynamic from "next/dynamic";
 import Counter from "../inputs/Counter";
 import ImageUpload from "../inputs/ImageUpload";
@@ -91,6 +85,10 @@ const RentModal = () => {
     }
     setIsLoading(true);
 
+    if (!imageSrc) {
+      toast.error("image required");
+      return;
+    }
     axios
       .post("/api/listings", data)
       .then(() => {

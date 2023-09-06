@@ -113,6 +113,14 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
                   onClick={() => {
                     loginModal.onOpen();
                     toggleOpen();
+                    router.push("/");
+                  }}
+                  label="Explore"
+                />
+                <MenuItem
+                  onClick={() => {
+                    loginModal.onOpen();
+                    toggleOpen();
                   }}
                   label="Login"
                 />
