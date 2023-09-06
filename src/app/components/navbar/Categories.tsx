@@ -71,7 +71,7 @@ export const categories = [
     description: "This Property has camping activities",
   },
   {
-    label: "Artic",
+    label: "Arctic",
     icon: BsSnow,
     description: "This Property has camping activities",
   },
